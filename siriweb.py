@@ -19,12 +19,6 @@ GPIO.setup(37, GPIO.IN, GPIO.PUD_UP) # Door 3 is Open sensor
 
 GPIO.setup(4, GPIO.OUT)			#Door 1 Relay to Open Door
 GPIO.output(4, GPIO.HIGH)
-GPIO.setup(11, GPIO.OUT)		#Door 2 Relay to Open Door
-GPIO.output(11, GPIO.HIGH)
-GPIO.setup(13, GPIO.OUT)		#Door 3 Relay to Open Door
-GPIO.output(13, GPIO.HIGH)
-GPIO.setup(15, GPIO.OUT)		#Not Used for the project
-GPIO.output(15, GPIO.HIGH)
 
 from config import (
 	PORT,
