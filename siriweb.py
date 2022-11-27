@@ -8,7 +8,7 @@ hostname = socket.gethostname()
 ip_address = socket.gethostbyname(socket.gethostname() + ".local")
 
 import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BOARD)  # the pin numbers refer to the board connector not the chip
+GPIO.setmode(GPIO.BCM)  # the pin numbers refer to the board connector not the chip
 GPIO.setwarnings(False)
 GPIO.setup(16, GPIO.IN, GPIO.PUD_UP) # Door 1 is Closed sensor
 GPIO.setup(18, GPIO.IN, GPIO.PUD_UP) # Door 1 is Open sensor

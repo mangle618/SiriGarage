@@ -3,7 +3,7 @@ print(" Control + C to exit Program")
 import time
 
 import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BOARD)    # the pin numbers refer to the board connector not the chip
+GPIO.setmode(GPIO.BCM)    # the pin numbers refer to the board connector not the chip
 GPIO.setwarnings(False)
 GPIO.setup(4, GPIO.OUT)     # sets the pin input/output setting to OUT
 GPIO.output(4, GPIO.HIGH)   # sets the pin output to high
