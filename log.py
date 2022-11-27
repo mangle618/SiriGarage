@@ -16,7 +16,7 @@ print(" Number of Doors: " + str(NUMBER_OF_DOORS))
 print(" Number of Sensors Per Door: " + str(SENSORS_PER_DOOR))
 
 
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
 GPIO.setup(16, GPIO.IN, GPIO.PUD_UP) # Door 1 is Closed sensor
