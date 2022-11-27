@@ -8,7 +8,7 @@ hostname = socket.gethostname()
 ip_address = socket.gethostbyname(socket.gethostname() + ".local")
 
 import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BCM)  # the pin numbers refer to the board connector not the chip
+GPIO.setmode(GPIO.BOARD)  # the pin numbers refer to the board connector not the chip
 GPIO.setwarnings(False)
 GPIO.setup(16, GPIO.IN, GPIO.PUD_UP) # Door 1 is Closed sensor
 GPIO.setup(18, GPIO.IN, GPIO.PUD_UP) # Door 1 is Open sensor
@@ -17,8 +17,8 @@ GPIO.setup(31, GPIO.IN, GPIO.PUD_UP) # Door 2 is Open sensor
 GPIO.setup(33, GPIO.IN, GPIO.PUD_UP) # Door 3 is Closed sensor
 GPIO.setup(37, GPIO.IN, GPIO.PUD_UP) # Door 3 is Open sensor
 
-GPIO.setup(4, GPIO.OUT)			#Door 1 Relay to Open Door
-GPIO.output(4, GPIO.HIGH)
+GPIO.setup(7, GPIO.OUT)			#Door 1 Relay to Open Door
+GPIO.output(7, GPIO.HIGH)
 
 from config import (
 	PORT,
@@ -93,9 +93,9 @@ def index():
 		if code == PASSWORD and ENABLE_PASSWORD == "YES" and BadPassword <= 5:  # 12345678 is the Default Password that Opens Garage Door (Code if Password is Correct)
 			print("Door requested to open: " + Door_To_Open)
 			if Door_To_Open == "door1":
-				GPIO.output(4, GPIO.LOW)
+				GPIO.output(7, GPIO.LOW)
 				time.sleep(1)
-				GPIO.output(4, GPIO.HIGH)
+				GPIO.output(7, GPIO.HIGH)
 				time.sleep(2)
 			if Door_To_Open == "door2":
 				GPIO.output(11, GPIO.LOW)
@@ -402,9 +402,9 @@ def GarageSiri():
 		if what_door == "Door1" and dowhat == "Open":
 			if GPIO.input(16) == GPIO.LOW:
 				print("Door 1 is currently Closed, let's open it.")
-				GPIO.output(4, GPIO.LOW)
+				GPIO.output(7, GPIO.LOW)
 				time.sleep(1)
-				GPIO.output(4, GPIO.HIGH)
+				GPIO.output(7, GPIO.HIGH)
 				return 'Garage Door Opening'
 			if GPIO.input(16) == GPIO.HIGH:
 				print("Garage is already open, do nothing.")
@@ -412,9 +412,9 @@ def GarageSiri():
 		if what_door == "Door1" and dowhat == "Close":
 			if GPIO.input(18) == GPIO.LOW:
 				print("Garage is currently Open, let's close it.")
-				GPIO.output(4, GPIO.LOW)
+				GPIO.output(7, GPIO.LOW)
 				time.sleep(1)
-				GPIO.output(4, GPIO.HIGH)
+				GPIO.output(7, GPIO.HIGH)
 				return 'Garage Door Closing'
 			if GPIO.input(18) == GPIO.HIGH:
 				print("Garage is already closed, do nothing.")
