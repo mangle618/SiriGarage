@@ -62,6 +62,11 @@ Setup Instructions:
     - Rasp_Pi_IP_Address:5001/page/sirisetup.html
 
 10.  Setup the Pi to autostart when the Pi boots.
+     - ran sudo crontab -e added these three lines:            
+            # sleep is to give the network enough time to start.  Otherwise I was getting 127.0.0.1
+            @reboot sleep 60 && sudo python3 /home/mike/SiriGarage/siriweb.py &
+            @reboot sleep 60 && sudo python3 /home/mike/SiriGarage/log.py &
+
      - sudo nano /etc/rc.local
      - Enter the 2 lines of code found on Rasp_Pi_IP_Address:5001/Settings before the last line that says "Exit 0"
      - Control + X (to exit and save)
