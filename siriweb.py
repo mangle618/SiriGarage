@@ -19,6 +19,12 @@ GPIO.setup(37, GPIO.IN, GPIO.PUD_UP) # Door 3 is Open sensor
 
 GPIO.setup(7, GPIO.OUT)			#Door 1 Relay to Open Door
 GPIO.output(7, GPIO.HIGH)
+GPIO.setup(11, GPIO.OUT)		#Door 2 Relay to Open Door
+GPIO.output(11, GPIO.HIGH)
+GPIO.setup(13, GPIO.OUT)		#Door 3 Relay to Open Door
+GPIO.output(13, GPIO.HIGH)
+GPIO.setup(15, GPIO.OUT)		#Not Used for the project
+GPIO.output(15, GPIO.HIGH)
 
 from config import (
 	PORT,
@@ -113,13 +119,13 @@ def index():
 				code = "NULL"
 			else:
 				BadPassword += 1
-				logfile = open("static/log.txt","a")
+				logfile = open("/home/mike/SiriGarage/static/log.txt","a")
 				logfile.write("     " + datetime.now().strftime(request.environ['REMOTE_ADDR'] + "     Password Entered: " + code + " -- %Y/%m/%d -- %H:%M  \n"))
 				logfile.close()
 				print(request.environ['REMOTE_ADDR'] + " -- " + str(BadPassword) + " wrong password(s) have been entered!")
 
 			if BadPassword > 5:
-				logfile = open("static/log.txt","a")
+				logfile = open("/home/mike/SiriGarage/static/log.txt","a")
 				logfile.write("     " + datetime.now().strftime(request.environ['REMOTE_ADDR'] + "     Too Many Wrong Passwords, System Disabled.  -- %Y/%m/%d -- %H:%M  \n"))
 				logfile.close()
 				print("Garage Code Entered: " + code)
@@ -308,7 +314,7 @@ def ChangeSettings():
 def Delete_Log_File():
 
 	#open text file in write mode (this will erase current file)
-	DeleteLogFile = open("static/log.txt", "w")
+	DeleteLogFile = open("/home/mike/SiriGarage/static/log.txt", "w")
 
 	DeleteLogFile.write(datetime.now().strftime("Log File Erased -- %Y/%m/%d -- %H:%M \n"))
 
@@ -395,7 +401,7 @@ def GarageSiri():
 
 
 	if ps == SIRI_PASSWORD:
-		logfile = open("static/log.txt","a")
+		logfile = open("/home/mike/SiriGarage/static/log.txt","a")
 		logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- " + request.environ['REMOTE_ADDR'] + " -- Garage Door Operated via Siri  \n"))
 		logfile.close()
 
@@ -410,13 +416,13 @@ def GarageSiri():
 				print("Garage is already open, do nothing.")
 				return 'Door 1 is already open'
 		if what_door == "Door1" and dowhat == "Close":
-			if GPIO.input(18) == GPIO.LOW:
+			if GPIO.input(16) == GPIO.HIGH:
 				print("Garage is currently Open, let's close it.")
 				GPIO.output(7, GPIO.LOW)
 				time.sleep(1)
 				GPIO.output(7, GPIO.HIGH)
 				return 'Garage Door Closing'
-			if GPIO.input(18) == GPIO.HIGH:
+			if GPIO.input(16) == GPIO.LOW:
 				print("Garage is already closed, do nothing.")
 				return 'Door 1 is already closed'
 
@@ -483,4 +489,4 @@ def page(sendpage):
 	return app.send_static_file(sendpage)
 
 if __name__ == '__main__':
-	app.run(debug=True, host=ip_address, port=PORT)
+	app.run(debug=False, host=ip_address, port=PORT)
