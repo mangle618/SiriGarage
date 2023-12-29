@@ -395,10 +395,12 @@ def GarageDoorStatus():
 
 @app.route('/Siri/Garage', methods=['POST'])
 def GarageSiri():
-	ps = request.form['ps']
-	what_door = request.form['door']
-	dowhat = request.form['dowhat']
-
+	#	ps = request.form['ps']
+	#	what_door = request.form['door']
+	#	dowhat = request.form['dowhat']
+	ps = request.args.get('ps')
+	what_door = request.args.get('door')
+	dowhat = request.args.get('dowhat')
 
 	if ps == SIRI_PASSWORD:
 		logfile = open("/home/mike/SiriGarage/static/log.txt","a")
