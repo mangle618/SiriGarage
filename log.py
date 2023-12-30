@@ -57,7 +57,7 @@ try:
 				print("Your Garage Door 1 has been Open for " + str((currentTimeDate - TimeDoor1_Opened).seconds) + " seconds. TimeDoor1 Opened " + str(TimeDoor1_Opened))
 				#print(TimeDoor1_Opened)
 				logfile = open("/home/mike/SiriGarage/static/log.txt","a")
-				logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open since " + str( TimeDoor1_Opened) + "\n") )
+				logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- 5 min warning Door 1 Open since " + str( TimeDoor1_Opened) + "\n") )
 				logfile.close()
 
 				subject = "URGENT Garage Door open since " + str( TimeDoor1_Opened) 
@@ -93,7 +93,7 @@ try:
 		if GPIO.input(16) == GPIO.HIGH and GPIO.input(18) == GPIO.HIGH:  #Door Status is Unknown (or Open if 1 Sensor Per Door)
 			logfile = open("/home/mike/SiriGarage/static/log.txt","a")
 			if SENSORS_PER_DOOR == 1:
-				logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open log 1 \n"))
+				logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open since " + str( TimeDoor1_Opened) + "\n") )
 				print(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open print 1"))
 				#Start Door Open Timer
 				if Door1_OpenTimer == 0:
