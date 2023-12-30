@@ -74,12 +74,14 @@ Setup Instructions:
 11.  Reboot system and let program autostart
      - sudo reboot
 
-12.  Set up Port Forwarding on your Router to allow access when away from home. (please note that this program is not a secure website (https), so it's best not to connect to this program on a public network like a coffee shop or hotel.)
+12.  ***Not Recommended*** Setup a VPN connection to your router instead.Set up Port Forwarding on your Router to allow access when away from home. (please note that this program is not a secure website (https), so it's best not to connect to this program on a public network like a coffee shop or hotel.)
      - You'll need to setup PORT FORWARDING on your home router to pass traffic from the internet to the Raspberry Pi.
      - Check out this video for help with port forwarding: https://youtu.be/VhVV25zCFrQ
      - To find out your External IP Address, Check this link: https://checkip.amazonaws.com
      - Setup Siri using your External IP Address and the Port Number you setup in Port Forwarding.
      - Once setup, turn off WiFi on your phone and test. You'll need to know the EXTERNALL address of your home router.
+
+13. I modified the original to include an email option and made some changes so I could open it slightly differently.
 
 --------------------------------------------------------------------
 Wiring Diagram:
