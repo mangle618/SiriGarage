@@ -3,6 +3,15 @@ import RPi.GPIO as GPIO
 import time
 from datetime import datetime
 
+#Including code to send an email through gmail 
+import smtplib
+from email.mime.text import MIMEText
+
+sender = "email@gmail.com"
+recipients = ["email1@gmail.com", "email2@gmail.com"]
+password = "" # generate an app password and save here
+#End
+
 
 from config import (NUMBER_OF_DOORS, SENSORS_PER_DOOR)
 
@@ -41,12 +50,33 @@ TimeDoor3_Opened = datetime.strptime(datetime.strftime(datetime.now(), '%Y-%m-%d
 
 try:
 	while 1 >= 0:
-		time.sleep(30)
+		time.sleep(30) # change back to 30 after testing
 		if Door1_OpenTimer != 0:  #Door Open Timer has Started
 			currentTimeDate = datetime.strptime(datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S'),'%Y-%m-%d %H:%M:%S')
-			if (currentTimeDate - TimeDoor1_Opened).seconds > 2 and Door1_OpenTimerMessageSent == 0:
-				print("Your Garage Door #1 has been Open for  (currentTimeDate - TimeDoor1_Opened).seconds seconds")
-				Door1_OpenTimerMessageSent = 0 #needs set bac to 1 so it only fires after timeopened  is greatthan above.
+			if (currentTimeDate - TimeDoor1_Opened).seconds > 300 and Door1_OpenTimerMessageSent == 0:
+				print("Your Garage Door 1 has been Open for " + str((currentTimeDate - TimeDoor1_Opened).seconds) + " seconds. TimeDoor1 Opened " + str(TimeDoor1_Opened))
+				#print(TimeDoor1_Opened)
+				logfile = open("/home/mike/SiriGarage/static/log.txt","a")
+				logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open since " + str( TimeDoor1_Opened) + "\n") )
+				logfile.close()
+
+				subject = "URGENT Garage Door open since " + str( TimeDoor1_Opened) 
+				body = "Close the door already!! It's been more than 5 minutes"
+
+				def send_email(subject, body, sender, recipients, password):
+					msg = MIMEText(body)
+					msg['X-Priority'] = '1' # Gmail doesn't use this, but if you send it to a microsoft account it will flag it.
+					msg['Subject'] = subject
+					msg['From'] = sender
+					msg['To'] = ', '.join(recipients)
+					with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
+						smtp_server.login(sender, password)
+						smtp_server.sendmail(sender, recipients, msg.as_string())
+					print("Message sent!")
+
+				send_email(subject, body, sender, recipients, password)
+				Door1_OpenTimerMessageSent = 0 #needs set back to 1 if you only want it to send an email once. only fires after timeopened  is greater than above.
+
 		if Door2_OpenTimer != 0:  #Door Open Timer has Started
 			currentTimeDate = datetime.strptime(datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S'),'%Y-%m-%d %H:%M:%S')
 			if (currentTimeDate - TimeDoor2_Opened).seconds > 900 and Door2_OpenTimerMessageSent == 0:
@@ -63,33 +93,33 @@ try:
 		if GPIO.input(16) == GPIO.HIGH and GPIO.input(18) == GPIO.HIGH:  #Door Status is Unknown (or Open if 1 Sensor Per Door)
 			logfile = open("/home/mike/SiriGarage/static/log.txt","a")
 			if SENSORS_PER_DOOR == 1:
-				logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open line 1 \n"))
-				print(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open"))
+				logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open log 1 \n"))
+				print(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open print 1"))
+				#Start Door Open Timer
+				if Door1_OpenTimer == 0:
+					TimeDoor1_Opened = datetime.strptime(datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S'),'%Y-%m-%d %H:%M:%S')
+					Door1_OpenTimer = 1
+					Door1_OpenTimerMessageSent = 0
 			else:
 				logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Opening/Closing \n"))
 				print(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Opening/Closing"))
 			logfile.close()
-			#Start Door Open Timer
-			TimeDoor1_Opened = datetime.strptime(datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S'),'%Y-%m-%d %H:%M:%S')
-			Door1_OpenTimer = 1
-			Door1_OpenTimerMessageSent = 0
-
 		else:
 			while GPIO.input(16) == GPIO.HIGH and GPIO.input(18) == GPIO.HIGH:
 				time.sleep(.5)
 			else:
 				if GPIO.input(16) == GPIO.LOW:  #Door is Closed
 					logfile = open("/home/mike/SiriGarage/static/log.txt","a")
-					logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Closed \n"))
+					logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Closed LINE 2 \n"))
 					logfile.close()
-					print(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Closed"))
+					print(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Closed line 2"))
 					Door1_OpenTimer = 0
 
 				if GPIO.input(18) == GPIO.LOW:  #Door is Open
 					logfile = open("/home/mike/SiriGarage/static/log.txt","a")
 					logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open line 2 \n"))
 					logfile.close()
-					print(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open"))
+					print(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open line 2"))
 					#Start Door Open Timer
 					TimeDoor1_Opened = datetime.strptime(datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S'),'%Y-%m-%d %H:%M:%S')
 					Door1_OpenTimer = 1
