@@ -44,9 +44,9 @@ try:
 		time.sleep(30)
 		if Door1_OpenTimer != 0:  #Door Open Timer has Started
 			currentTimeDate = datetime.strptime(datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S'),'%Y-%m-%d %H:%M:%S')
-			if (currentTimeDate - TimeDoor1_Opened).seconds > 900 and Door1_OpenTimerMessageSent == 0:
-				print("Your Garage Door #1 has been Open for 15 minutes")
-				Door1_OpenTimerMessageSent = 1
+			if (currentTimeDate - TimeDoor1_Opened).seconds > 2 and Door1_OpenTimerMessageSent == 0:
+				print("Your Garage Door #1 has been Open for  (currentTimeDate - TimeDoor1_Opened).seconds seconds")
+				Door1_OpenTimerMessageSent = 0 #needs set bac to 1 so it only fires after timeopened  is greatthan above.
 		if Door2_OpenTimer != 0:  #Door Open Timer has Started
 			currentTimeDate = datetime.strptime(datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S'),'%Y-%m-%d %H:%M:%S')
 			if (currentTimeDate - TimeDoor2_Opened).seconds > 900 and Door2_OpenTimerMessageSent == 0:
@@ -63,12 +63,17 @@ try:
 		if GPIO.input(16) == GPIO.HIGH and GPIO.input(18) == GPIO.HIGH:  #Door Status is Unknown (or Open if 1 Sensor Per Door)
 			logfile = open("/home/mike/SiriGarage/static/log.txt","a")
 			if SENSORS_PER_DOOR == 1:
-				logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open \n"))
+				logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open line 1 \n"))
 				print(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open"))
 			else:
 				logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Opening/Closing \n"))
 				print(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Opening/Closing"))
 			logfile.close()
+			#Start Door Open Timer
+			TimeDoor1_Opened = datetime.strptime(datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S'),'%Y-%m-%d %H:%M:%S')
+			Door1_OpenTimer = 1
+			Door1_OpenTimerMessageSent = 0
+
 		else:
 			while GPIO.input(16) == GPIO.HIGH and GPIO.input(18) == GPIO.HIGH:
 				time.sleep(.5)
@@ -82,7 +87,7 @@ try:
 
 				if GPIO.input(18) == GPIO.LOW:  #Door is Open
 					logfile = open("/home/mike/SiriGarage/static/log.txt","a")
-					logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open \n"))
+					logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open line 2 \n"))
 					logfile.close()
 					print(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Open"))
 					#Start Door Open Timer
