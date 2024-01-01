@@ -398,6 +398,9 @@ def GarageSiri():
 	#	ps = request.form['ps']
 	#	what_door = request.form['door']
 	#	dowhat = request.form['dowhat']
+	# commented out the form fields because it didn't work with Tesla-geogdo
+	# The fields below go into the URL, because I only use this over a VPN and it isn't exposed to the internet.
+	# http://IP:5001//Siri/Garage?ps=<passwordValue>&door=Door1&dowhat=Open
 	ps = request.args.get('ps')
 	what_door = request.args.get('door')
 	dowhat = request.args.get('dowhat')
