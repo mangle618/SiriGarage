@@ -114,9 +114,9 @@ try:
 					if Door1_CurrentState != 0: # Door was already closed, don't keep logging it.
 						TimeDoor1_Closed = datetime.strptime(datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S'),'%Y-%m-%d %H:%M:%S')
 						logfile = open("/home/mike/SiriGarage/static/log.txt","a")
-						logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Closed since " + str( TimeDoor1_Opened) + "\n") )
+						logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Closed since " + str( TimeDoor1_Closed) + "\n") )
 						logfile.close()
-						print(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Closed since " + str( TimeDoor1_Opened) + "\n") )
+						print(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 Closed since " + str( TimeDoor1_Closed) + "\n") )
 						Door1_OpenTimer = 0
 
 				if GPIO.input(18) == GPIO.LOW:  #Door is Open
