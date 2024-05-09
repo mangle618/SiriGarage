@@ -416,6 +416,16 @@ def GarageSiri():
 				GPIO.output(7, GPIO.LOW)
 				time.sleep(1)
 				GPIO.output(7, GPIO.HIGH)
+				time.sleep(2)
+				if GPIO.input(16) == GPIO.LOW:
+					#	This is to resolve an issue after a power cycle of the garage door opener it takes two presses to open.
+					logfile2 = open("/home/mike/SiriGarage/static/log.txt","a")
+					logfile2.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- Door 1 took two tries to open \n") )
+					logfile2.close()
+					print("Door 1 still closed, let's try one more time.")
+					GPIO.output(7, GPIO.LOW)
+					time.sleep(1)
+					GPIO.output(7, GPIO.HIGH)
 				return 'Garage Door Opening'
 			if GPIO.input(16) == GPIO.HIGH:
 				print("Garage is already open, do nothing.")
