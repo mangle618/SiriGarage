@@ -1,3 +1,7 @@
+I added a 10 minute delay on boot by adding this line to /boot/config.txt.  That way my network gear can boot up after a power loss.
+boot_delay=600
+
+
 YouTube Video Instructions found here: https://youtu.be/wfsYFM-9Dns
 
 Setting up a Flask web server to control your garage door & display the door status & log usage. This Setup can control up to 3 garage doors and can also be controlled using Siri on you iPhone & Apple Watch
