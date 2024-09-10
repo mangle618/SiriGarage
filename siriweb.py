@@ -407,7 +407,7 @@ def GarageSiri():
 
 	if ps == SIRI_PASSWORD:
 		logfile = open("/home/mike/SiriGarage/static/log.txt","a")
-		logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- " + request.environ['REMOTE_ADDR'] + " -- Garage Door Operated via Siri  \n"))
+		logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- " + request.environ['REMOTE_ADDR'] + " -- Garage Door "  + str( dowhat) + " via Siri  \n"))
 		logfile.close()
 
 		if what_door == "Door1" and dowhat == "Open":
